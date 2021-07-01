@@ -29,6 +29,7 @@ for list_of_passwords in list_of_passwords:
     if cookie_value is not None:
         cookies.update({"auth_cookie": cookie_value})
 
+
     response_for_check = requests.post("https://playground.learnqa.ru/ajax/api/check_auth_cookie", cookies=cookies)
 
     if response_for_check.text != wrong:
