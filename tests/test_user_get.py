@@ -40,13 +40,7 @@ class TestUserGet(BaseCase):
 
     def test_get_user_details_auth_as_other_user(self):
         # Create new user
-        data = {
-            'password': '123',
-            'username': 'Leon',
-            'firstName': 'Anna',
-            'lastName': 'leonidova',
-            'email': self.email
-        }
+        data = self.prepare_registration_data()
 
         response1 = requests.post("https://playground.learnqa.ru/api/user/", data=data)
 
