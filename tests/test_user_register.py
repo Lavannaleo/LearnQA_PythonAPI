@@ -1,7 +1,8 @@
 import pytest
 import requests
-from lib.base_case import BaseCase
-from lib.assertions import Assertions
+from LearnQA_PythonAPI.lib.my_requests import MyRequests
+from LearnQA_PythonAPI.lib.base_case import BaseCase
+from LearnQA_PythonAPI.lib.assertions import Assertions
 
 
 class TestUserRegister(BaseCase):
@@ -16,7 +17,7 @@ class TestUserRegister(BaseCase):
     def test_create_user_successfully(self):
         data = self.prepare_registration_data()
 
-        response = requests.post("https://playground.learnqa.ru/api/user/", data=data)
+        response = MyRequests.post("/user/", data=data)
 
         Assertions.assert_code_status(response, 200)
         Assertions.assert_json_has_key(response, "id")
@@ -25,7 +26,7 @@ class TestUserRegister(BaseCase):
         email = 'vinkotov@example.com'
         data = self.prepare_registration_data(email)
 
-        response = requests.post("https://playground.learnqa.ru/api/user/", data=data)
+        response = MyRequests.post("/user/", data=data)
 
         Assertions.assert_code_status(response, 400)
         assert response.content.decode("utf-8") == f"Users with email '{email}' already exists",f"Unexpected response content '{response.content}'"
@@ -34,7 +35,7 @@ class TestUserRegister(BaseCase):
         email = 'vinkotovexample.com'
         data = self.prepare_registration_data(email)
 
-        response = requests.post("https://playground.learnqa.ru/api/user/", data=data)
+        response = MyRequests.post("/user/", data=data)
 
         Assertions.assert_code_status(response, 400)
         assert response.content.decode("utf-8") == "Invalid email format",f"Unexpected response content '{response.content}'"
@@ -55,7 +56,7 @@ class TestUserRegister(BaseCase):
         elif condition == 'password':
             data.update(password="")
 
-        response = requests.post("https://playground.learnqa.ru/api/user/", data=data)
+        response = MyRequests.post("/user/", data=data)
 
         Assertions.assert_code_status(response, 400)
         assert response.content.decode("utf-8") == f"The value of '{condition}' field is too short",f"Unexpected response content '{response.content}'"
@@ -64,7 +65,7 @@ class TestUserRegister(BaseCase):
         data = self.prepare_registration_data()
         data.update(username="v")
 
-        response = requests.post("https://playground.learnqa.ru/api/user/", data=data)
+        response = MyRequests.post("/user/", data=data)
 
         Assertions.assert_code_status(response, 400)
         assert response.content.decode("utf-8") == f"The value of 'username' field is too short",f"Unexpected response content '{response.content}'"
@@ -74,7 +75,7 @@ class TestUserRegister(BaseCase):
         # username lenght is 256 symbols
         data.update(username = 'vinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvanvinvinvn')
 
-        response = requests.post("https://playground.learnqa.ru/api/user/", data=data)
+        response = MyRequests.post("/user/", data=data)
 
         Assertions.assert_code_status(response, 400)
         assert response.content.decode("utf-8") == f"The value of 'username' field is too long",f"Unexpected response content '{response.content}'"
