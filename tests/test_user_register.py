@@ -44,17 +44,8 @@ class TestUserRegister(BaseCase):
     def test_create_user_without_one_parameter(self, condition):
         data = self.prepare_registration_data()
 
-        # Обнуляю нужный элемент словаря data; некрасиво, но не знаю как по-другому, не хватает знания питона
-        if condition == 'username':
-            data.update(username="")
-        elif condition == 'firstName':
-            data.update(firstName="")
-        elif condition == 'lastName':
-            data.update(lastName="")
-        elif condition == 'email':
-            data.update(email="")
-        elif condition == 'password':
-            data.update(password="")
+        # Обнуляю нужный элемент словаря data
+        data[condition] = ""
 
         response = MyRequests.post("/user/", data=data)
 
