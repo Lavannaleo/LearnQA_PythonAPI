@@ -1,5 +1,4 @@
 import pytest
-import requests
 from LearnQA_PythonAPI.lib.my_requests import MyRequests
 from LearnQA_PythonAPI.lib.base_case import BaseCase
 from LearnQA_PythonAPI.lib.assertions import Assertions
