@@ -1,10 +1,12 @@
-import requests
 from LearnQA_PythonAPI.lib.my_requests import MyRequests
-from lib.base_case import BaseCase
-from lib.assertions import Assertions
-from datetime import datetime
+from LearnQA_PythonAPI.lib.base_case import BaseCase
+from LearnQA_PythonAPI.lib.assertions import Assertions
+import allure
 
+@allure.epic("Get User Info Cases")
 class TestUserGet(BaseCase):
+    @allure.description("This test checks get user info by unauthorized user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_get_user_details_not_auth(self):
         response = MyRequests.get("/user/2")
 
@@ -13,6 +15,8 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_not_key(response, "firstName")
         Assertions.assert_json_has_not_key(response, "lastName")
 
+    @allure.description("This test checks get user info by the same user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_get_user_details_auth_as_same_user(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -33,6 +37,8 @@ class TestUserGet(BaseCase):
         expected_fields = ["username", "email", "firstName", "lastName"]
         Assertions.assert_json_has_keys(response2, expected_fields)
 
+    @allure.description("This test checks get user info by the other user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_get_user_details_auth_as_other_user(self):
         # Create new user
         data = self.prepare_registration_data()

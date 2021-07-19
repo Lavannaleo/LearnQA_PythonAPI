@@ -1,8 +1,12 @@
 from LearnQA_PythonAPI.lib.my_requests import MyRequests
 from LearnQA_PythonAPI.lib.base_case import BaseCase
 from LearnQA_PythonAPI.lib.assertions import Assertions
+import allure
 
+@allure.epic("User Delete Cases")
 class TestUserDelete(BaseCase):
+    @allure.description("This test successfully delete user with id=2 by the same authorized user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_user_with_id_2(self):
         # LOGIN user id=2
         login_data = {
@@ -23,6 +27,8 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response1, 400)
         assert response1.content.decode('utf-8') == "Please, do not delete test users with ID 1, 2, 3, 4 or 5.",f"Unexpected response content '{response1.content.decode('utf-8')}'"
 
+    @allure.description("This test successfully delete user by the same authorized user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_user_same_user_is_auth(self):
         # REGISTER new user
         register_data = self.prepare_registration_data()
@@ -63,6 +69,8 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response2, 404)
         assert response2.content.decode('utf-8') == "User not found", "Unexpected case - user is found"
 
+    @allure.description("This negative test delete user by other authorized user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_user_other_user_is_auth(self):
         # REGISTER new user
         register_data = self.prepare_registration_data()

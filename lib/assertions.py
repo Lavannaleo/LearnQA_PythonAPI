@@ -3,7 +3,7 @@ import json
 
 class Assertions:
     @staticmethod
-    def assert_json_value_by_name(response: Response, name, expected_value, error_massage):
+    def assert_json_value_by_name(response: Response, name, expected_value, error_message):
         try:
             response_as_dict = response.json()
         except json.JSONDecodeError:

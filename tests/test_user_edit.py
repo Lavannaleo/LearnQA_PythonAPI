@@ -1,8 +1,9 @@
 from LearnQA_PythonAPI.lib.my_requests import MyRequests
 from LearnQA_PythonAPI.lib.base_case import BaseCase
 from LearnQA_PythonAPI.lib.assertions import Assertions
+import allure
 
-
+@allure.epic("User Edit Cases")
 class TestUserEdit(BaseCase):
     def setup(self):
         # REGISTER
@@ -17,6 +18,8 @@ class TestUserEdit(BaseCase):
         self.password = register_data['password']
         self.user_id = self.get_json_value(response1, "id")
 
+    @allure.description("This test successfully edit user firstName by the same authorized user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_firstName_just_created_user_by_the_same_auth_user(self):
         # LOGIN
         login_data = {
@@ -46,6 +49,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_json_value_by_name(response4, "firstName", new_name, "Wrong name of user after edit")
 
+    @allure.description("This negative test checks edit user firstName by the same unauthorized user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_just_created_user_by_the_same_unauth_user(self):
         # EDIT W/O AUTH (no headers and cookies)
         new_name = "Changed Name"
@@ -75,6 +80,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_json_value_by_name(response3, "firstName", self.first_name, "Wrong name of user after edit")
 
+    @allure.description("This negative test checks edit user firstName by other authorized user")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_just_created_user_by_the_other_auth_user(self):
         # LOGIN by other user
         login_data = {
@@ -116,6 +123,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_json_value_by_name(response5, "firstName", self.first_name, "Wrong name of user after edit")
 
+    @allure.description("This negative test checks edit user email to incorrect format by the same authorized user")
+    @allure.severity(allure.severity_level.NORMAL)
     def test_edit_email_just_created_user_by_the_same_auth_user(self):
         # LOGIN
         login_data = {
@@ -146,6 +155,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_json_value_by_name(response4, "email", self.email, "Wrong user email after edit")
 
+    @allure.description("This negative test checks edit user firstName to very short by the same authorized user")
+    @allure.severity(allure.severity_level.MINOR)
     def test_edit_firstName_To_Short_by_the_same_auth_user(self):
         # LOGIN
         login_data = {
